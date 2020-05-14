@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width = device-width, initial-scale=1.0">
+    <title>Leo Sneaker</title>
+    <!--Bootstrap-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <!--font awsome cdn-->
+    <script src="https://kit.fontawesome.com/c6db19dff2.js" crossorigin="anonymous"></script>
+    <!--google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Arvo|Gugi|Lato|Roboto|Sofia&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+            $(function() {
+                $(".toggle").on("click", function(){
+                    if($(".item").hasClass("active")){
+                        $(".item").removeClass("active");
+                    }
+                    else{
+                        $(".item").addClass("active");
+                    }
+                })
+            });
+
+
+    </script>
+</head>
+<body>
+<style>
+body {margin:0;font-family:Arial}
+.header {
+	background: black;
+	padding-left: 5em;
+}
+.button {
+	padding-top: 7px;
+	overflow: hidden;
+	float: right;
+}
+.button a {
+	padding-right: 10px;
+	text-decoration: none;
+	color: white;
+	display: inline-table;
+}
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+}
+.topnav a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+.active {
+  background-color: #333;
+  color: white;
+}
+.topnav .icon {
+  display: none;
+}
+.dropdown {
+  float: left;
+  overflow: hidden;
+}
+.dropdown .dropbtn {
+  font-size: 17px;
+  border: none;
+  outline: none;
+  color: white;
+  padding: 14px 16px;
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+.dropdown-content a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+.topnav a:hover, .dropdown:hover .dropbtn {
+  background-color: #555;
+  color: white;
+}
+.dropdown-content a:hover {
+  background-color: #ddd;
+  color: black;
+}
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+@media screen and (max-width: 600px) {
+	.button {
+		float: none;
+	}
+  .topnav a:not(:first-child), .dropdown .dropbtn {
+    display: none;
+  }
+  .topnav a.icon {
+    float: right;
+    display: block;
+  }
+}
+@media screen and (max-width: 600px) {
+  .topnav.responsive {position: relative;}
+  .topnav.responsive .icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .topnav.responsive a {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+  .topnav.responsive .dropdown {float: none;}
+  .topnav.responsive .dropdown-content {position: relative;}
+  .topnav.responsive .dropdown .dropbtn {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+}
+#body {
+	padding-bottom:60px;
+}
+#footer {
+	position:absolute;
+   bottom:0;
+   width:100%;
+   height:60px;   /* Height of the footer */
+}
+
+
+</style>
+<div class="header">
+    <a href="{% url 'core:home'%}"><img
+            src="https://res.cloudinary.com/dmsqafar4/image/upload/v1589125270/Leo%20sneaker/123_rulx78.png?fbclid=IwAR2eptCs5ryhznGjHn6-Jocqh-sNe1IxZONOx1DM2p-37tB9qvUDKIapG6c"></a>
+    <div class="button">
+        {% if user.is_authenticated %}
+        <a href="{% url 'logout'%}">Đăng Xuất</a>
+        {%else%}
+        <a href="{%url 'register'%}"><i class="fa fa-user left" aria-hidden="true"></i> Đăng Ký</a>
+        <a href="{% url 'login'%}"><i class="fa fa-lock left" aria-hidden="true"></i> Đăng Nhập</a>
+        {%endif%}
+    </div>
+</div>
+<div class="topnav" id="myTopnav">
+    <a href="{% url 'core:home'%}" class="active">Trang Chủ</a>
+    <a href="{% url 'core:help'%}">Tư Vấn Size</a>
+    <a href="{% url 'core:reviews'%}">Review Giày</a>
+    {% if user.is_authenticated %}
+    <a href="{% url 'core:contact'%}">Liên Hệ</a>
+    {%endif%}
+    <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
+    {% load cart_template_tags %}
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-2"></div>
+        <div class="col-md-2"></div>
+        <div class="col-md-2"></div>
+        <div class="col-md-2"></div>
+        <div class="col-md-2" style="text-align: center;  ">
+            {% if request.user.is_authenticated %}
+            <li class="nav-item" style="list-style-type: none ">
+                <a href="{% url 'core:order-summary'%}" class="nav-link waves-effect">
+                    <span class="badge red z-depth-1 mr-1"
+                          style="color: white"> {{ request.user|cart_item_count }} </span>
+                    <i class="fas fa-shopping-cart" style="color: white"></i>
+                    <span class="clearfix d-none d-sm-inline-block" style="color: white"> Cart </span>
+                </a>
+            </li>
+            {%endif%}
+        </div>
+    </div>
+</div>
+<script>
+function myFunction() {
+  var x = document.getElementById("myTopnav");
+  if (x.className === "topnav") {
+    x.className += " responsive";
+  } else {
+    x.className = "topnav";
+  }
+}
+
+
+</script>
+<div class="mt-1 pt-1">
+    {%if messages %}
+    {%for message in messages%}
+    <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+        {{message}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {%endfor%}
+    {% endif %}
+</div>
+
+{% block reviews %}{% endblock %}
+{% block homepage %} {% endblock %}
+{% block login %} {% endblock %}
+{% block content %} {% endblock %}
+{% block product_detail%} {% endblock %}
+{% block extra_scripts %} {% endblock extra_scripts %}
+{% block extra_head %} {% endblock %}
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+</body>
+<br><br>
+<style>
+	.row p{
+		color: #999;
+		line-height: 24px;
+	}
+	h2{
+		color: #fff;
+		font-size: 20px;
+	}
+	.footer-top{
+		background: #111;
+		padding: 20px 0;
+	}
+	.segment-one h2{
+		color: #fff;
+		font-family: Poppins;
+	}
+	.segment-one h2:before{
+		content: '|';
+		color: #c65039;
+		padding-right: 10px;
+	}
+	.segment-two h2{
+		color: #fff;
+		font-family: Poppins;
+		text-transform: uppercase;
+	}
+	.segment-two h2:before{
+		content: '|';
+		color: #c65039;
+		padding-right: 10px;
+	}
+	.segment-two ul{
+		margin: 0;
+		padding: 0;
+		list-style-type: none;
+	}
+	.segment-two ul li{
+		border-bottom: 1px solid rgba(255,255,255,0.3);
+		line-height: 40px;
+	}
+	.segment-two ul li a{
+		color: #999;
+		text-decoration: none;
+	}
+	.segment-three h2{
+		color: #fff;
+		font-family: Poppins;
+		text-transform: uppercase;
+	}
+	.segment-three h2:before{
+		content: '|';
+		color: #c65039;
+		padding-right: 10px;
+	}
+	.segment-three a{
+		background: #494848;
+		width: 55px;
+		height: 55px;
+		display: inline-block;
+		border-radius: 50%;
+	}
+	.segment-three a i{
+		font-size: 30px;
+		color: #fff;
+		padding: 12px 12px;
+	}
+	.segment-four h2{
+		color: #fff;
+		font-family: Poppins;
+		text-transform: uppercase;
+	}
+	.segment-four h2:before{
+		content: '|';
+		color: #c65039;
+		padding-right: 10px;
+	}
+	.segment-four form input[type=submit]{
+		background: #c65039;
+		border: none;
+		padding: 3px 15px;
+		color: #fff;
+		text-transform: uppercase;
+	}
+	.copyright{
+		text-align: center;
+		padding-top: 15px;
+		background: #000;
+		height: 58px;
+	}
+	/* responsive css */
+	@media only screen and (min-width: 768px) and (max-width: 991px){
+		.md-mb-30{
+			margin-bottom: 30px;
+		}
+	}
+	@media only screen and (max-width: 767px){
+		.sm-mb-30{
+			margin-bottom: 30px;
+		}
+		.footer-top{
+			padding: 50px 0;
+		}
+	}
+
+
+</style>
+<footer>
+    <div class="footer-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-sm-6 col-xs-12 segment-one md-mb-30 sm-mb-30">
+                    <h2>LEO Sneaker</h2>
+                    <p>Hệ thống cửa hàng giày thể thao thời trang chất lượng. Với phương châm kinh doanh UY TÍN và nâng
+                        cao CHẤT LƯỢNG sản phẩm tiêu dùng, cùng kinh nghiệm nhiều năm trong ngành giày dép của ban lãnh
+                        đạo, LEO Sneaker đang từng bước trở thành thương hiệu giày thể thao hàng đầu được lựa chọn tại
+                        Việt Nam.</p>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12 segment-two md-mb-30 sm-mb-30">
+                    <h2>Thông tin</h2>
+                    <ul>
+                        <li><a href="{% url 'core:home'%}">Trang Chủ</a></li>
+                        <li><a href="{% url 'core:help'%}">Tư Vấn Size</a></li>
+                        <li><a href="{% url 'core:reviews'%}">Review Giày</a></li>
+                        <li><a href="{% url 'core:contact'%}">Liên Hệ</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12 segment-three sm-mb-30 ">
+                    <h2>Kết nối với chúng tôi</h2>
+                    <p>Theo dõi chúng tôi qua các đường dẫn sau:</p>
+                    <a href="https://www.facebook.com/dustin.bo.9"><i class="fa fa-facebook"></i></a>
+                    <a href="https://instagram.com/tranducbonlqda?igshid=1wt4is4so3jz4"><i class="fa fa-instagram"></i></a>
+                    <a href="https://www.youtube.com/channel/UCqHGORrs8rQx-voDUmdr38w"><i class="fa fa-youtube"></i></a>
+                    <a href="https://twitter.com/realdonaldtrump"><i class="fa fa-twitter"></i></a>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12 segment-four sm-mb-30">
+                    <h2>Đăng ký nhận Email</h2>
+                    <p>Đăng ký ngay để nhận được album mới, các chương trình khuyến mãi mới.</p>
+                    <div class="header">
+                        <div class="button">
+                            {% if user.is_authenticated %}
+                            <a href="{% url 'logout'%}">Đăng Xuất</a>
+                            {%else%}
+                            <a href="{%url 'register'%}"><i class="fa fa-user left" aria-hidden="true"></i> Đăng Ký</a>
+                            <a href="{% url 'login'%}"><i class="fa fa-lock left" aria-hidden="true"></i> Đăng Nhập</a>
+                            {%endif%}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="copyright"><p>2020 © <strong>LEO Sneaker</strong>. All rights reserved. <a href="#" target="_blank"
+                                                                                           style="color: #999; text-decoration: none;">DEVELOPED
+        BY Team2 - 43K21</a></p></div>
+</footer>
+</html>
