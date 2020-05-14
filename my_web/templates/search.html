@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+{% if books %}
+{% for each_book in books %}
+
+<p>{{each_book.title}}</p>
+<p>Rs.{{each_book.price}}</p>
+{% endfor %}
+{% endif %}
+{%endblock%}
