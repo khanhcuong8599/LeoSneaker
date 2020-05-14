@@ -1,0 +1,158 @@
+{% extends 'base.html'%}
+{% block login %}
+
+<script>
+	function searchdata()
+	{
+		var input, table, tr, td, filter, i, dpdata;
+		input = document.getElementById("searchddl");
+		filter = input.value.toUpperCase();
+		table = document.getElementById("table1");
+		tr = table.getElementsByTagName("tr");
+		for(i=0;i<tr.length;i++)
+		{
+			td = tr[i].getElementsByTagName("td")[0];
+			if(td)
+			{
+				dpdata = td.innerText;
+				if(dpdata.toUpperCase().indexOf(filter)>-1)
+				{
+					tr[i].style.display="";
+				}
+				else
+				{
+					tr[i].style.display="none";
+				}
+			}
+		}
+	}
+
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+	$(document).ready(function()
+	{
+		$("#table1 tr td").each(function()
+		{
+			var emptyrows=$.trim($(this).text());
+			if(emptyrows.length!=0)
+			{
+				$(this).parent().hide();
+			}
+		});
+	});
+</script>
+<style>
+tr{
+    height: 30px;
+}
+/* Reset Select */
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+  outline: 0;
+  box-shadow: none;
+  border: 0 !important;
+  background: #ebedef;
+  background-image: none;
+}
+/* Remove IE arrow */
+select::-ms-expand {
+  display: none;
+}
+/* Custom Select */
+.select {
+  position: relative;
+  display: flex;
+  width: 20em;
+  height: 3em;
+  line-height: 3;
+  background: #ebedef;
+  overflow: hidden;
+  border-radius: .25em;
+}
+select {
+  flex: 1;
+  padding: 0 1em;
+  color: #000000;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+/* Arrow */
+.select::after {
+  content: '\25BC';
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0 1em;
+  background: #838e95;
+  cursor: pointer;
+  pointer-events: none;
+  -webkit-transition: .25s all ease;
+  -o-transition: .25s all ease;
+  transition: .25s all ease;
+}
+/* Transition */
+.select:hover::after {
+  color: #fff;
+}
+
+
+</style>
+
+
+<div class="container mt-5 text-center">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <center>
+                <h1>Vui lòng chọn kích thước chân của bạn:</h1>
+
+                <div class="select">
+                    <select id="searchddl" onclick="searchdata();">
+                        <option disable="true" selected>-- Chọn kích thước chân --</option>
+                        {% for result in sizes%}
+                        <option value="{{result.leglength}}">{{result.leglength}}</option>
+                        {%endfor%}
+
+                    </select>
+                </div>
+                <br>
+
+                <table class="table" id="table1">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col" style="text-align: center">Kích thước chân của bạn</th>
+                        <th scope="col" style="text-align: center">Size giày phù hợp với bạn</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        {% for result in sizes %}
+                    <tr>
+                        <td style="text-align: center">{{result.leglength}}</td>
+                        <td style="text-align: center">{{result.Shoessize}}</td>
+                    </tr>
+                    {% endfor %}
+                    </tr>
+                    </tbody>
+                </table>
+
+            </center>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+</div>
+
+
+{%endblock%}
+
+
+
