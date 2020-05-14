@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="form-group">
+                          <select class="btn btn-warning" id="sel1", name = "dropdown1">
+                              {%for size in object_list %}
+                            <option>{{size.sizes}}</option>
+                              {%endfor%}
+                          </select>
+</div>
+</body>
+</html>
